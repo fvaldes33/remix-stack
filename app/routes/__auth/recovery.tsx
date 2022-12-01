@@ -1,11 +1,12 @@
-import { TextInput, PasswordInput, Button } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { showNotification } from "@mantine/notifications";
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { useMemo, useState } from "react";
+import { toast } from "react-hot-toast";
 import { z } from "zod";
+
+import { Button } from "~/components/primitives";
 import { requireAuthSession } from "~/lib/auth/guards.server";
 import { getSupabase } from "~/lib/supabase";
 
@@ -55,11 +56,7 @@ export default function RecoveryPage() {
     console.log(error);
     if (error) {
       setLoading(false);
-      showNotification({
-        title: "Whoops",
-        message: error.message,
-        color: "red",
-      });
+      toast.error(error.message);
       return;
     }
 
@@ -85,23 +82,22 @@ export default function RecoveryPage() {
       <div className="p-8 md:p-12">
         <form method="post" onSubmit={onSubmit(handleSubmit)}>
           <div className="flex flex-col space-y-6">
-            <TextInput
+            <input
               label="Email"
               type="email"
               name="email"
               placeholder="you@email.com"
-              size="md"
               disabled
               required
               {...getInputProps("email")}
             />
-            <PasswordInput
+            <input
               label="Password"
               name="password"
               placeholder="********"
               autoComplete="new-password"
-              size="md"
               required
+              type="password"
               {...getInputProps("password")}
             />
             <Button type="submit" loading={loading}>

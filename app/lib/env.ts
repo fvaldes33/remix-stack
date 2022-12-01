@@ -63,6 +63,16 @@ export const SPACES_CDN = getEnv("SPACES_CDN", {
   isSecret: false,
 });
 
+// Google
+export const GA_TRACKING_ID = getEnv("GA_TRACKING_ID", {
+  isSecret: false,
+  isRequired: false,
+});
+export const GTM_TRACKING_ID = getEnv("GTM_TRACKING_ID", {
+  isSecret: false,
+  isRequired: false,
+});
+
 export const PRIVATE_SLACK_WEBHOOK = getEnv("PRIVATE_SLACK_WEBHOOK");
 export const SLACK_TOKEN = getEnv("SLACK_TOKEN");
 

@@ -1,12 +1,10 @@
 import { Transition } from "@headlessui/react";
 import { Form, Link, NavLink, useLocation } from "@remix-run/react";
-import { useAtomValue } from "jotai";
 import { Fragment, useState } from "react";
 import { Menu, Search, X } from "tabler-icons-react";
 
 import { Button } from "~/components/primitives";
 import AvatarMenu from "~/components/AvatarMenu";
-import { colorSchemeAtom } from "~/lib/atoms/root";
 import { classNames } from "~/lib/classNames";
 import { useUserData } from "~/lib/hooks/useUserData";
 
@@ -16,13 +14,9 @@ interface HeaderLink {
   end?: boolean;
 }
 
-const mainLinks: HeaderLink[] = [
-  { to: "/explore", label: "Explore" },
-  { to: "/designer", label: "Designer" },
-  // { to: "/app/create", label: "Create" },
-];
+const mainLinks: HeaderLink[] = [{ to: "/page", label: "Page" }];
 
-const extraLinks: HeaderLink[] = [
+const avatarLinks: HeaderLink[] = [
   // { to: "/app", label: "Designs" },
   // { to: "/app/create", label: "Create" },
   { to: "/app/account", label: "Account" },
@@ -33,7 +27,6 @@ export default function Header({ fullWidth = false }: { fullWidth?: boolean }) {
   const location = useLocation();
   const [opened, setOpened] = useState<boolean>(false);
   const [searchOpened, setSearchOpened] = useState<boolean>(false);
-  const colorScheme = useAtomValue(colorSchemeAtom);
   const finalLinks = mainLinks.concat(
     user
       ? [{ to: "/app", label: "My Designs", end: true }]
@@ -48,14 +41,14 @@ export default function Header({ fullWidth = false }: { fullWidth?: boolean }) {
     <>
       <header
         className={classNames(
-          "flex h-20 items-center px-4 relative z-50 lg:justify-between",
-          colorScheme === "light" ? "text-white" : "text-slate-800"
+          "container flex h-20 items-center px-4 relative z-50 lg:justify-between",
+          "text-slate-800"
         )}
       >
-        <div className="flex items-center lg:w-1/2 lg:flex-shrink-0">
+        <div className="flex items-center lg:flex-shrink-0">
           <Link to="/" className="relative font-bold text-xl">
             <span>
-              Designed <span className="text-indigo-600 font-black">/ AI</span>
+              P <span className="text-emerald-600 font-black">/ T</span>
             </span>
           </Link>
 
@@ -118,9 +111,9 @@ export default function Header({ fullWidth = false }: { fullWidth?: boolean }) {
           </button>
         </div>
 
-        <div className="hidden lg:flex lg:justify-end lg:w-1/3 lg:flex-shrink-0">
+        <div className="hidden lg:flex lg:justify-end">
           {/* Desktop */}
-          <div className="mr-4 w-full">
+          <div className="hidden mr-4 w-full">
             <Form
               action={searchEndpoint}
               className="relative flex-1 lg:w-full lg:max-w-md mx-auto"
@@ -128,11 +121,11 @@ export default function Header({ fullWidth = false }: { fullWidth?: boolean }) {
             >
               <input
                 type="search"
-                placeholder="Search Images..."
+                placeholder="Search..."
                 name="q"
                 className={classNames(
                   "pl-10 pr-4 h-10  rounded-full w-full shadow-md focus-within:border-none text-slate-800",
-                  colorScheme === "light" ? "bg-white " : "bg-white/50"
+                  "bg-white/50"
                 )}
               />
               <Search
@@ -148,7 +141,7 @@ export default function Header({ fullWidth = false }: { fullWidth?: boolean }) {
               Create Account
             </Button>
           ) : (
-            <AvatarMenu links={extraLinks} />
+            <AvatarMenu links={avatarLinks} />
           )}
         </div>
         {/* End Desktop */}
@@ -158,12 +151,12 @@ export default function Header({ fullWidth = false }: { fullWidth?: boolean }) {
         <div className="flex h-20 items-center px-4 fixed top-0 inset-x-0 z-50">
           <Form
             action={searchEndpoint}
-            className="flex-1 mr-4 focus:outline-indigo-600 focus:ring-indigo-600"
+            className="flex-1 mr-4 focus:outline-emerald-600 focus:ring-emerald-600"
             onSubmitCapture={() => setSearchOpened(false)}
           >
             <input
               type="search"
-              placeholder="Search Images..."
+              placeholder="Search..."
               name="q"
               className="px-4 h-10 bg-gray-200 rounded-full w-full shadow-md"
             />

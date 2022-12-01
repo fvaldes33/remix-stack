@@ -11,10 +11,10 @@ export default function HomePage() {
 
   return (
     <>
-      <section>
-        public area
-        <pre>{JSON.stringify(loaderData, null, 2)}</pre>
+      <section className="container my-48">
+        <h1 className="text-6xl font-bold mb-4">Project Template Hero</h1>
       </section>
+      <pre>{JSON.stringify(loaderData, null, 2)}</pre>
     </>
   );
 }

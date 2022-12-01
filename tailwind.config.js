@@ -1,4 +1,5 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
+const colors = require("tailwindcss/colors");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -15,6 +16,10 @@ module.exports = {
         show: "show 150ms cubic-bezier(0.16, 1, 0.3, 1) forwards",
         slideRight: "slideRight 0.3s ease-in-out forwards",
         slideUp: "slideUp 0.3s ease-in-out forwards",
+      },
+      colors: {
+        primary: colors.emerald,
+        secondary: colors.sky,
       },
       fontFamily: {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
@@ -38,5 +43,6 @@ module.exports = {
   plugins: [
     require("@tailwindcss/aspect-ratio"),
     require("@tailwindcss/typography"),
+    require("@tailwindcss/forms"),
   ],
 };

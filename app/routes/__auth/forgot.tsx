@@ -1,13 +1,14 @@
-import { TextInput, Text, Button, Alert } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { showNotification } from "@mantine/notifications";
 import type { LoaderArgs } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 import { Check } from "tabler-icons-react";
 import { z } from "zod";
+
 import { requireNonAuthSession } from "~/lib/auth/guards.server";
 import { getSupabase } from "~/lib/supabase";
+import { Button } from "~/components/primitives";
 
 const ForgotSchema = z.object({
   email: z.string().email(),
@@ -39,11 +40,7 @@ export default function ForgotPage() {
 
     if (error) {
       setLoading(false);
-      showNotification({
-        title: "Whoops",
-        message: error.message,
-        color: "red",
-      });
+      toast.error(error.message);
       return;
     }
 
@@ -69,17 +66,16 @@ export default function ForgotPage() {
       </div>
       <div className="p-8 md:p-12">
         {success ? (
-          <Alert
-            icon={<Check size={24} />}
-            title="Success"
-            mt={16}
-            color="green"
-          >
-            <Text>Please check your email for further instructions</Text>
-          </Alert>
+          <div className="bg-green-700/25 border border-green-700/50 mb-4 p-4">
+            <Check size={24} />
+            <div>
+              <p>Success</p>
+              <p>Please check your email for further instructions</p>
+            </div>
+          </div>
         ) : (
           <form method="post" onSubmit={onSubmit(handleSubmit)}>
-            <TextInput
+            <input
               id="email"
               label="Email"
               name="email"
@@ -87,7 +83,7 @@ export default function ForgotPage() {
               required
               {...getInputProps("email")}
             />
-            <Button type="submit" fullWidth mt="xl" loading={loading}>
+            <Button type="submit" loading={loading}>
               Reset Password
             </Button>
           </form>

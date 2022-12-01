@@ -1,17 +1,15 @@
-import { Divider, TextInput, Button, Alert } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
 import { Link, useSearchParams } from "@remix-run/react";
 import type { AuthError, Session, User } from "@supabase/supabase-js";
 import { useMutation } from "@tanstack/react-query";
 import { AlertCircle } from "tabler-icons-react";
 import { z } from "zod";
 
+import { Button, Input } from "~/components/primitives";
 import GoogleIcon from "~/components/GoogleIcon";
 import { requireNonAuthSession } from "~/lib/auth/guards.server";
-import { APP_NAME, PROMPT_SAVE_KEY } from "~/lib/const";
-import { commitSession, getSession } from "~/lib/session.server";
+import { APP_NAME } from "~/lib/const";
 import { getSupabase } from "~/lib/supabase";
 
 const SignupSchema = z.object({
@@ -23,29 +21,6 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export async function action({ request }: ActionArgs) {
-  const formData = await request.formData();
-  const promptIds = formData.getAll("promptIds");
-
-  if (promptIds && promptIds.length > 0) {
-    // save this shit
-    const session = await getSession(request);
-    session.set(
-      PROMPT_SAVE_KEY,
-      JSON.stringify({
-        action: "upsert",
-        ids: promptIds,
-      })
-    );
-    return json(
-      {},
-      {
-        headers: {
-          "Set-Cookie": await commitSession(session),
-        },
-      }
-    );
-  }
-
   return null;
 }
 
@@ -123,13 +98,14 @@ export default function SignupPage({ asPage = true }: { asPage?: boolean }) {
       <div className="p-8 md:p-12">
         {!asPage && (
           <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-8 text-center">
-            Designed <span className="text-indigo-600 font-black">/ AI</span>
+            Designed <span className="text-emerald-600 font-black">/ AI</span>
           </h1>
         )}
         {createAccount.error && (
-          <Alert color="red" icon={<AlertCircle />} mb={16}>
-            {createAccount.error.message}
-          </Alert>
+          <div className="bg-red-700/25 border border-red-700/50 mb-4 p-4">
+            <AlertCircle size={24} />
+            <div>{createAccount.error.message}</div>
+          </div>
         )}
 
         {createAccount.data ? (
@@ -151,25 +127,27 @@ export default function SignupPage({ asPage = true }: { asPage?: boolean }) {
                 </span>
               </button>
 
-              <Divider label="OR" labelPosition="center" my={16} />
+              {/* <Divider label="OR" labelPosition="center" my={16} /> */}
             </div>
-            <form method="post" onSubmit={onSubmit(handleSubmit)}>
+            <form
+              className="mt-6"
+              method="post"
+              onSubmit={onSubmit(handleSubmit)}
+            >
               <div className="flex flex-col space-y-6">
-                <TextInput
+                <Input
                   id="email"
-                  label="Email"
+                  aria-label="Email"
                   name="email"
+                  type="email"
                   placeholder="you@email.com"
                   required
-                  size="md"
                   {...getInputProps("email")}
                 />
 
                 <Button
                   type="submit"
-                  radius="sm"
-                  variant="filled"
-                  fullWidth
+                  variant="primary"
                   loading={createAccount.isLoading}
                 >
                   Send Magic Link

@@ -1,4 +1,3 @@
-import { Alert, Divider, TextInput, Button } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import type { LoaderArgs } from "@remix-run/node";
 import { Link } from "@remix-run/react";
@@ -8,6 +7,7 @@ import { AlertCircle } from "tabler-icons-react";
 import { z } from "zod";
 
 import GoogleIcon from "~/components/GoogleIcon";
+import { Button } from "~/components/primitives";
 import { getSupabase } from "~/lib/supabase";
 import { requireNonAuthSession } from "~/lib/auth/guards.server";
 
@@ -85,9 +85,10 @@ export default function LoginPage() {
       </div>
       <div className="p-8 md:p-12">
         {createAccount.error && (
-          <Alert color="red" icon={<AlertCircle />} mb={16}>
-            {createAccount.error.message}
-          </Alert>
+          <div className="bg-red-700/25 border border-red-700/50 mb-4 p-4">
+            <AlertCircle size={24} />
+            <div>{createAccount.error.message}</div>
+          </div>
         )}
 
         {createAccount.data ? (
@@ -109,25 +110,22 @@ export default function LoginPage() {
                 </span>
               </button>
 
-              <Divider label="OR" labelPosition="center" my={16} />
+              {/* <Divider label="OR" labelPosition="center" my={16} /> */}
             </div>
             <form method="post" onSubmit={onSubmit(handleSubmit)}>
               <div className="flex flex-col space-y-6">
-                <TextInput
+                <input
                   id="email"
                   label="Email"
                   name="email"
                   placeholder="you@email.com"
                   required
-                  size="md"
                   {...getInputProps("email")}
                 />
 
                 <Button
                   type="submit"
-                  radius="sm"
-                  variant="filled"
-                  fullWidth
+                  variant="primary"
                   loading={createAccount.isLoading}
                 >
                   Send Magic Link

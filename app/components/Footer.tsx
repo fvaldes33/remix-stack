@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="container mx-auto">
         <div>
           <Link to="/" className="font-bold text-xl">
-            Designed <span className="text-indigo-600 font-black">/ AI</span>
+            Designed <span className="text-emerald-600 font-black">/ AI</span>
           </Link>
           <nav className="flex mt-2 divide-x-2 -mx-2">
             <Link className="px-2" to="/explore">

@@ -8,11 +8,13 @@ import {
   Meta,
   Outlet,
   Scripts,
+  ScrollRestoration,
   useCatch,
   useLoaderData,
   useLocation,
 } from "@remix-run/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "react-hot-toast";
 
 import { useEffect, useState } from "react";
 import { commitSession, generateHash, getSession } from "./lib/session.server";
@@ -61,6 +63,7 @@ export async function loader({ request }: LoaderArgs) {
         PUBLIC_MAPBOX_KEY: process.env.PUBLIC_MAPBOX_KEY,
         PUBLIC_GOOGLE_MAP_KEY: process.env.PUBLIC_GOOGLE_MAP_KEY,
         GA_TRACKING_ID: process.env.GA_TRACKING_ID,
+        GTM_TRACKING_ID: process.env.GTM_TRACKING_ID,
         PRINTFUL_SECRET: process.env.PRINTFUL_SECRET,
         SPACES_CDN: process.env.SPACES_CDN,
         SPACES_BASE: process.env.SPACES_BASE,
@@ -130,6 +133,7 @@ export default function App() {
               />
             </>
           )}
+          <Toaster />
           <Outlet />
           <ScrollRestoration />
           <script
